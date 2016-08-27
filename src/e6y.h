@@ -35,6 +35,25 @@
 #define __E6Y__
 
 #include <stdarg.h>
+#include <time.h>
+#ifdef WIN32
+#include <conio.h>
+#else
+
+#include <termios.h>
+#include <unistd.h>   // for read()
+
+static struct termios initial_settings, new_settings;
+static int peek_character = -1;
+
+void init_keyboard(void);
+void close_keyboard(void);
+int _getch(void);
+int _kbhit(void);
+
+#endif // WIN32
+
+char TimedInput(int);
 
 #include "hu_lib.h"
 #include "r_demo.h"
@@ -281,7 +300,7 @@ typedef struct timetable_s
   int kill[MAXPLAYERS];
   int item[MAXPLAYERS];
   int secret[MAXPLAYERS];
-  
+
   int stat[TT_MAX];
 } timetable_t;
 
